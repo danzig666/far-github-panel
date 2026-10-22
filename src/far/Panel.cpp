@@ -140,7 +140,7 @@ void Session::Login() {
 }
 
 bool Session::FallBack() {
-  if (source == TokenSource::Anonymous) return false;
+  if (source == LoginSource::Anonymous) return false;
   TokenResult r = FindToken(&source);
   client->SetToken(r.token);
   client->ClearCache();
@@ -213,7 +213,7 @@ bool Panel::Run(const std::wstring& title, bool silent, const std::function<void
     } catch (const gh::CancelledError&) {
     } catch (const gh::ApiError& e) {
       if (e.status() == 401 && attempt == 0) {
-        TokenSource rejected = s.source;
+        LoginSource rejected = s.source;
         if (s.FallBack()) {
           if (!silent)
             fui::ShowError(title, L"GitHub rejected the token from " + SourceName(rejected) + L".\nTrying " +
@@ -226,7 +226,7 @@ bool Panel::Run(const std::wstring& title, bool silent, const std::function<void
         if (e.rateLimited()) {
           text = L"GitHub rate limit reached.";
           if (e.resetAt()) text += L"\nIt resets at " + fui::FormatTime(e.resetAt()) + L".";
-          if (s.source == TokenSource::Anonymous)
+          if (s.source == LoginSource::Anonymous)
             text += L"\nYou are not logged in. Log in with \"gh auth login\" for 5,000 requests per hour.";
         } else if (e.status() == 404) {
           text = L"Not found, or your login (" + SourceName(s.source) + L") cannot see it.";
@@ -379,7 +379,7 @@ std::vector<Panel::Item> Panel::Build(const std::vector<std::string>& comps, con
         }
       }
       for (const auto& extra : config::ExtraOwners()) addOwner(extra, L"added with F7 (F8 removes it)");
-      if (s.source == TokenSource::Anonymous) {
+      if (s.source == LoginSource::Anonymous) {
         Item it;
         it.name = L"(not logged in - run \"gh auth login\", or F7 to add an owner)";
         items.push_back(it);
@@ -608,7 +608,7 @@ void Panel::GetOpenPanelInfo(OpenPanelInfo* info) {
   curDirW_ = comps_.empty() ? L"" : DisplayPath(comps_);
   if (comps_.empty()) {
     titleW_ = L" GitHub: " + (s.login.empty() ? std::wstring(L"anonymous") : W(s.login)) +
-              (s.source == TokenSource::Anonymous ? L"" : L" (" + SourceName(s.source) + L")") + L" ";
+              (s.source == LoginSource::Anonymous ? L"" : L" (" + SourceName(s.source) + L")") + L" ";
   } else {
     titleW_ = L" GitHub:" + curDirW_;
     if (loc_.level == gh::Level::Tree && !commit_.sha.empty())

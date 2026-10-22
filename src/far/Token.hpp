@@ -5,18 +5,18 @@
 #include <vector>
 
 // Where the GitHub token came from, in the order they are tried.
-enum class TokenSource { Saved, EnvGhToken, EnvGithubToken, GhCli, Anonymous };
+enum class LoginSource { Saved, EnvGhToken, EnvGithubToken, GhCli, Anonymous };
 
 struct TokenResult {
   std::string token;  // empty for Anonymous
-  TokenSource source = TokenSource::Anonymous;
+  LoginSource source = LoginSource::Anonymous;
 };
 
 // Tries the sources in order. With `after`, starts at the source after it
 // (to fall back when GitHub rejected a token); nullptr starts at the top.
-TokenResult FindToken(const TokenSource* after = nullptr);
+TokenResult FindToken(const LoginSource* after = nullptr);
 
-std::wstring SourceName(TokenSource source);
+std::wstring SourceName(LoginSource source);
 
 // Runs `gh auth token --hostname github.com` (gh.exe found on PATH only,
 // never in the current folder). Returns an empty string if gh is missing,

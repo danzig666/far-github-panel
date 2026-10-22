@@ -111,35 +111,35 @@ std::string GhCliToken(std::wstring* problem) {
   return token;
 }
 
-TokenResult FindToken(const TokenSource* after) {
-  static const TokenSource kOrder[] = {TokenSource::Saved, TokenSource::EnvGhToken, TokenSource::EnvGithubToken,
-                                       TokenSource::GhCli};
+TokenResult FindToken(const LoginSource* after) {
+  static const LoginSource kOrder[] = {LoginSource::Saved, LoginSource::EnvGhToken, LoginSource::EnvGithubToken,
+                                       LoginSource::GhCli};
   bool started = after == nullptr;
-  for (TokenSource s : kOrder) {
+  for (LoginSource s : kOrder) {
     if (!started) {
       if (s == *after) started = true;
       continue;
     }
     std::string token;
     switch (s) {
-      case TokenSource::Saved: token = config::SavedToken(); break;
-      case TokenSource::EnvGhToken: token = config::Opt().useEnv ? Env(L"GH_TOKEN") : ""; break;
-      case TokenSource::EnvGithubToken: token = config::Opt().useEnv ? Env(L"GITHUB_TOKEN") : ""; break;
-      case TokenSource::GhCli: token = config::Opt().useGhCli ? GhCliToken() : ""; break;
-      case TokenSource::Anonymous: break;
+      case LoginSource::Saved: token = config::SavedToken(); break;
+      case LoginSource::EnvGhToken: token = config::Opt().useEnv ? Env(L"GH_TOKEN") : ""; break;
+      case LoginSource::EnvGithubToken: token = config::Opt().useEnv ? Env(L"GITHUB_TOKEN") : ""; break;
+      case LoginSource::GhCli: token = config::Opt().useGhCli ? GhCliToken() : ""; break;
+      case LoginSource::Anonymous: break;
     }
     if (!token.empty()) return TokenResult{token, s};
   }
   return TokenResult{};
 }
 
-std::wstring SourceName(TokenSource source) {
+std::wstring SourceName(LoginSource source) {
   switch (source) {
-    case TokenSource::Saved: return L"saved token";
-    case TokenSource::EnvGhToken: return L"GH_TOKEN";
-    case TokenSource::EnvGithubToken: return L"GITHUB_TOKEN";
-    case TokenSource::GhCli: return L"gh";
-    case TokenSource::Anonymous: return L"anonymous";
+    case LoginSource::Saved: return L"saved token";
+    case LoginSource::EnvGhToken: return L"GH_TOKEN";
+    case LoginSource::EnvGithubToken: return L"GITHUB_TOKEN";
+    case LoginSource::GhCli: return L"gh";
+    case LoginSource::Anonymous: return L"anonymous";
   }
   return L"";
 }

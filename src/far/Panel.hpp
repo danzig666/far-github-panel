@@ -20,7 +20,7 @@ class Progress;
 // Login and caches shared by all GitHub panels.
 struct Session {
   std::shared_ptr<gh::GitHubClient> client;
-  TokenSource source = TokenSource::Anonymous;
+  LoginSource source = LoginSource::Anonymous;
   std::string login;  // "" when anonymous or not checked yet
   bool loginChecked = false;
 
