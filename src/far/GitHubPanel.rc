@@ -1,0 +1,29 @@
+#include <winver.h>
+#include "Version.hpp"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION GHP_VERSION_MAJOR, GHP_VERSION_MINOR, GHP_VERSION_REVISION, GHP_VERSION_BUILD
+PRODUCTVERSION GHP_VERSION_MAJOR, GHP_VERSION_MINOR, GHP_VERSION_REVISION, GHP_VERSION_BUILD
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS 0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_DLL
+FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "FileDescription", "GitHub panel plugin for Far Manager 3"
+      VALUE "FileVersion", GHP_VERSION_STRING
+      VALUE "InternalName", "GitHubPanel"
+      VALUE "OriginalFilename", "GitHubPanel.dll"
+      VALUE "ProductName", "far-github-panel"
+      VALUE "ProductVersion", GHP_VERSION_STRING
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1200
+  END
+END
