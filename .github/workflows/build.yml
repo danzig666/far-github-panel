@@ -85,10 +85,17 @@ jobs:
           Copy-Item build\Release\GitHubPanel.dll dist\GitHubPanel\
           Copy-Item docs\PLUGIN-README.txt dist\GitHubPanel\README.txt
           Compress-Archive -Path dist\GitHubPanel -DestinationPath "dist\GitHubPanel-$version-x64.zip"
+          # The bare DLL and its checksum are what "Check for updates" downloads.
+          Copy-Item build\Release\GitHubPanel.dll dist\GitHubPanel.dll
+          $hash = (Get-FileHash dist\GitHubPanel.dll -Algorithm SHA256).Hash.ToLower()
+          [IO.File]::WriteAllText("dist\GitHubPanel.dll.sha256", "$hash  GitHubPanel.dll`n")
       - uses: actions/upload-artifact@v4
         with:
           name: GitHubPanel-x64
-          path: dist/*.zip
+          path: |
+            dist/*.zip
+            dist/*.dll
+            dist/*.sha256
 
   release:
     name: GitHub release
@@ -107,7 +114,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$RELEASE_TAG" dist/*.zip \
+          gh release create "$RELEASE_TAG" dist/*.zip dist/*.dll dist/*.sha256 \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "GitHub panel for Far $RELEASE_TAG" \

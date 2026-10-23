@@ -12,8 +12,11 @@ Requirements
 Installation
 ------------
 1. Close Far Manager.
-2. Copy the GitHubPanel folder from this zip into %FARHOME%\Plugins\
-   so that you have %FARHOME%\Plugins\GitHubPanel\GitHubPanel.dll
+2. Copy the GitHubPanel folder from this zip into your personal plugins
+   folder, %FARPROFILE%\Plugins\ (usually %APPDATA%\Far Manager\Profile\Plugins),
+   or into %FARHOME%\Plugins\. The personal folder needs no admin rights and
+   lets the plugin update itself (see "Updating").
+   You should end up with ...\Plugins\GitHubPanel\GitHubPanel.dll
 3. Start Far Manager.
 
 Login
@@ -58,7 +61,7 @@ Keys
                    (nothing changes on GitHub)
   Shift+F1         actions: open in browser, copy URL, clone with git
                    (puts the command on the command line), download ZIP,
-                   rate limit and login, log in again
+                   rate limit and login, log in again, check for updates
   Ctrl+R           refresh
   Ctrl+L           info panel: repository details, commit, requests left
 
@@ -77,3 +80,22 @@ Settings
 F9 > Options > Plugins configuration > GitHub panel: disk menu entry,
 command line prefix, saved token, and whether to use the environment
 variables and the gh CLI.
+
+Updating
+--------
+Shift+F1 > Check for updates asks GitHub for the latest release. If there is
+a newer one, "Update now" downloads it, checks its SHA-256 checksum, and swaps
+it in while Far keeps running (Windows lets a loaded DLL be renamed, not
+overwritten). Restart Far to use the new version; Far windows that are open
+keep the old one until they restart.
+
+The old file is kept as "GitHubPanel.dll.<version>-<time>.old" and deleted
+automatically - at Far start or after the next update - but only once no
+running Far has it loaded. If a Far running as administrator cannot be
+checked, nothing is deleted that time.
+
+This needs the plugin to be in a folder you can write to. Far also loads
+plugins from your profile, which needs no admin rights:
+  %FARPROFILE%\Plugins   (usually %APPDATA%\Far Manager\Profile\Plugins)
+Install the plugin there instead of under Program Files (and remove the copy
+in Program Files, or Far finds the same plugin twice).

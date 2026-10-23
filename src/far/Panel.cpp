@@ -14,6 +14,7 @@
 #include "FarApi.hpp"
 #include "Guids.hpp"
 #include "Progress.hpp"
+#include "Updater.hpp"
 #include "Version.hpp"
 #include "WinHttpTransport.hpp"
 
@@ -1257,7 +1258,7 @@ void Panel::ActionsMenu() {
   if ((loc_.level == gh::Level::Branches || loc_.level == gh::Level::Tags) && item && item->kind == Item::Kind::Ref)
     ref = item->real;
 
-  enum Action { Browser, CopyUrl, Clone, Zip, Rate, Relogin };
+  enum Action { Browser, CopyUrl, Clone, Zip, Rate, Relogin, Update };
   std::vector<std::wstring> labels;
   std::vector<int> actions;
   auto add = [&](const std::wstring& text, int action) {
@@ -1273,6 +1274,8 @@ void Panel::ActionsMenu() {
   add(L"-", -1);
   add(L"&Rate limit and login", Rate);
   add(L"Log in &again (re-read gh / token)", Relogin);
+  add(L"-", -1);
+  add(L"Check for &updates", Update);
 
   intptr_t index = fui::Menu(L"GitHub", labels, W(url));
   if (index < 0 || static_cast<size_t>(index) >= actions.size()) return;
@@ -1322,6 +1325,9 @@ void Panel::ActionsMenu() {
       fui::Message(FMSG_LEFTALIGN, lines, {L"OK"}, MessageGuid);
       break;
     }
+    case Update:
+      updater::CheckForUpdates();
+      break;
     case Relogin:
       Session::Get().Login();
       fresh_ = false;

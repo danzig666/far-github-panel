@@ -1,8 +1,17 @@
+### 0.2.0
+
+- **Shift+F1 → Check for updates**. If a newer release exists, *Update now* downloads it, verifies its SHA-256 checksum and swaps it in while Far keeps running. Restart Far to use it.
+- The replaced DLL is kept as `GitHubPanel.dll.<version>-<time>.old` and deleted automatically (at Far start or after the next update) only once no running `far.exe` has it loaded.
+- Self-update needs the plugin in a folder you can write to. Far also loads plugins from `%FARPROFILE%\Plugins` (usually `%APPDATA%\Far Manager\Profile\Plugins`), which needs no admin rights: install it there instead of under Program Files.
+- Releases now also include the bare `GitHubPanel.dll` and `GitHubPanel.dll.sha256` used by the updater.
+
+### 0.1.0
+
 First release: a read-only GitHub panel for Far Manager 3.
 
 **Requirements:** Far Manager 3.0.6638+ (x64).
 
-**Install:** unzip, copy the `GitHubPanel` folder into `%FARHOME%\Plugins\`, restart Far. Open it from the disk menu (Alt+F1/Alt+F2 → GitHub) or type `gh:` / `gh:owner/repo` on the command line.
+**Install:** unzip and copy the `GitHubPanel` folder into `%FARPROFILE%\Plugins\` (recommended, no admin rights needed) or `%FARHOME%\Plugins\`, then restart Far. Keep only one copy. Open it from the disk menu (Alt+F1/Alt+F2 → GitHub) or type `gh:` / `gh:owner/repo` on the command line.
 
 **Login:** uses your existing `gh` CLI login automatically. Also supports `GH_TOKEN` / `GITHUB_TOKEN` or a token saved (DPAPI-encrypted) in the plugin settings; without any, public data only.
 

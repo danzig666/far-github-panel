@@ -68,10 +68,11 @@ if(WIN32 AND GHP_BUILD_PLUGIN)
     src/far/Plugin.cpp
     src/far/Progress.cpp
     src/far/Token.cpp
+    src/far/Updater.cpp
     src/far/GitHubPanel.def
     src/far/GitHubPanel.rc
   )
   target_include_directories(GitHubPanel PRIVATE far-sdk src/far)
-  target_link_libraries(GitHubPanel PRIVATE ghwinhttp crypt32)
+  target_link_libraries(GitHubPanel PRIVATE ghwinhttp crypt32 bcrypt psapi)
   set_target_properties(GitHubPanel PROPERTIES PREFIX "" OUTPUT_NAME "GitHubPanel")
 endif()
