@@ -214,9 +214,10 @@ and are renamed when complete.
 
 ### 5.2 Opening
 
-- Disk menu (Alt+F1/F2) → **GitHub**: opens `/`.
+- Disk menu (Alt+F1/F2) → **GitHub**: reopens the last location, else `/`.
 - Command line `gh:` prefix:
-  - `gh:` opens `/`
+  - `gh:` reopens the last location (saved whenever the panel navigates; `/` if it no longer exists)
+  - `gh:/` opens `/`
   - `gh:danzig666` opens an owner
   - `gh:danzig666/far-ps5-filemanager` opens a repo
   - `gh:danzig666/far-ps5-filemanager/src/core` opens a path

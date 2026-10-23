@@ -1,3 +1,7 @@
+### 0.2.1
+
+- The panel remembers where you were. Opening it again (disk menu, F11, or a bare `gh:`) returns to the last folder, e.g. `/danzig666/repo-example/src`, including branch and tag folders. If that place no longer exists it opens the top level instead. `gh:/` always opens the top level.
+
 ### 0.2.0
 
 - **Shift+F1 → Check for updates**. If a newer release exists, *Update now* downloads it, verifies its SHA-256 checksum and swaps it in while Far keeps running. Restart Far to use it.

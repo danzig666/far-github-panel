@@ -521,6 +521,9 @@ bool Panel::Load(const std::vector<std::string>& comps, bool silent) {
     byName_[items_[i].name] = i;
   }
   fresh_ = true;
+  // Remember it for next time; not during Alt+F7 searches, which wander
+  // through every folder silently.
+  if (!silent) config::SetLastLocation(comps_);
   return true;
 }
 
@@ -593,8 +596,17 @@ std::vector<std::string> Panel::ParseTarget(const std::wstring& input) {
 }
 
 bool Panel::Open(const std::wstring& target) {
+  std::wstring t = Trim(target);
+  if (t.empty()) {
+    // Disk menu, F11 or a bare "gh:": go back to where the panel was last.
+    // If that place is gone (repository deleted, branch removed), quietly
+    // start at the top instead.
+    std::vector<std::string> last = config::LastLocation();
+    if (!last.empty() && Load(last, true)) return true;
+    return Load({}, false);
+  }
   std::vector<std::string> comps;
-  if (!Trim(target).empty() && Trim(target) != L"/") {
+  if (t != L"/") {
     if (!Run(kTitle, false, [&] { comps = ParseTarget(target); })) comps.clear();
   }
   if (Load(comps, false)) return true;

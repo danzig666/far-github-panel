@@ -31,8 +31,10 @@ The top level's title shows who you are and where the login came from.
 
 Opening
 -------
-- Alt+F1 / Alt+F2 (disk menu) > GitHub
-- Command line:  gh:                              your owners
+- Alt+F1 / Alt+F2 (disk menu) > GitHub, or F11 > GitHub panel: reopens where
+  you were last (or the top level if that place no longer exists)
+- Command line:  gh:                              where you were last
+                 gh:/                             the top level (your owners)
                  gh:octocat                       an owner's repositories
                  gh:owner/repo                    a repository
                  gh:owner/repo/src/core           a folder

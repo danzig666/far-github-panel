@@ -25,6 +25,10 @@ void SetSavedToken(const std::string& token);  // empty removes it
 std::vector<std::string> ExtraOwners();
 void SetExtraOwners(const std::vector<std::string>& owners);
 
+// Where the panel was last (path components, UTF-8); reopened next time.
+std::vector<std::string> LastLocation();
+void SetLastLocation(const std::vector<std::string>& comps);
+
 // F9 > Options > Plugins configuration. Returns true if the login settings changed.
 bool ConfigureDialog();
 

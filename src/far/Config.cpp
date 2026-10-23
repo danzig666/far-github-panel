@@ -144,6 +144,37 @@ void SetExtraOwners(const std::vector<std::string>& owners) {
   s.SetString(kRoot, L"Owners", fui::W(list));
 }
 
+namespace {
+// Components never contain '\n' (GitHub names and git paths cannot).
+std::vector<std::string> SplitLines(const std::string& text) {
+  std::vector<std::string> out;
+  size_t start = 0;
+  while (start < text.size()) {
+    size_t end = text.find('\n', start);
+    std::string part = text.substr(start, end == std::string::npos ? std::string::npos : end - start);
+    if (!part.empty()) out.push_back(part);
+    if (end == std::string::npos) break;
+    start = end + 1;
+  }
+  return out;
+}
+}  // namespace
+
+std::vector<std::string> LastLocation() {
+  Settings s;
+  return SplitLines(fui::U(s.GetString(kRoot, L"LastLocation", L"")));
+}
+
+void SetLastLocation(const std::vector<std::string>& comps) {
+  std::string text;
+  for (const auto& c : comps) {
+    if (!text.empty()) text.push_back('\n');
+    text += c;
+  }
+  Settings s;
+  s.SetString(kRoot, L"LastLocation", fui::W(text));
+}
+
 bool ConfigureDialog() {
   Options o = Opt();
   std::wstring tokenLabel = HasSavedToken() ? L"Saved &token (one is saved; type \"-\" to remove it):"
